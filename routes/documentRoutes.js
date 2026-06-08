@@ -6,7 +6,7 @@ const upload = require('../middlewares/uploadMiddleware');
 const { uploadDocument, getMyDocuments, getDocumentById, deleteDocument } = require('../controllers/documentController');
 
 // POST /documents - Upload PDF (butuh login + multer)
-router.post('/', verifyToken, upload.single('file'), uploadDocument);
+router.post('/', verifyToken, upload.single('document'), uploadDocument);
 
 // GET /documents - Daftar dokumen milik user yang login
 router.get('/', verifyToken, getMyDocuments);
@@ -17,7 +17,7 @@ router.get('/files/:filename', (req, res) => {
   const filePath = path.join(__dirname, '..', 'uploads', filename);
   const fs = require('fs');
   if (!fs.existsSync(filePath)) {
-    return res.status(404).json({ status: 'fail', message: 'File tidak ditemukan' });
+    return res.status(404).json({ status: 'failed', message: 'File tidak ditemukan' });
   }
   res.setHeader('Content-Type', 'application/pdf');
   res.sendFile(filePath);
